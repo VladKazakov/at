@@ -7,12 +7,17 @@ import java.util.Set;
 public class Main {
 
     public static void main(String[] args) {
-        Set<Integer> mainSet = new ArraySet<>(){{
-            add(1);
-            add(2);
-        }};
+//        Set<Integer> mainSet = new ArraySet<>(){{
+//            add(1);
+//            add(2);
+//        }};
+//
+//        System.out.println(mainSet.contains(2));
 
-        System.out.println(mainSet.contains(2));
+        Set<Integer>mainSet = new ArraySet<>();
+        mainSet.add(1);
+        mainSet.add(1);
+        System.out.println(mainSet.size());
     }
 
 
@@ -42,7 +47,14 @@ public class Main {
 
         @Override
         public int size() {
-            return mass.length;
+            int i = 0;
+            for (E t : mass) {
+                if (t == null) {
+                    return i;
+                }
+                i++;
+            }
+            return i;
         }
     }
 
