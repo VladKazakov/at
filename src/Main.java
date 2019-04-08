@@ -7,16 +7,14 @@ import java.util.Set;
 public class Main {
 
     public static void main(String[] args) {
-//        Set<Integer> mainSet = new ArraySet<>(){{
-//            add(1);
-//            add(2);
-//        }};
-//
-//        System.out.println(mainSet.contains(2));
 
-        Set<Integer>mainSet = new ArraySet<>();
-        mainSet.add(1);
-        mainSet.add(1);
+        Set<Integer>mainSet = new ArraySet<>() {{
+            add(1);
+            add(2);
+            add(null);
+        }};
+
+        System.out.println(mainSet.contains(null));
         System.out.println(mainSet.size());
     }
 
@@ -25,12 +23,21 @@ public class Main {
 
         private transient E[] mass;
 
+        private int count = 0;
+
+        private boolean icContainsNull = false;
+
         public ArraySet() {
             mass = (E[])(new Object[100]);
         }
 
         @Override
         public boolean add(E e) {
+            count++;
+            if (e == null) {
+                icContainsNull = true;
+            }
+
             for (int i = 0; i < this.mass.length; i++) {
                 if (mass[i] == null) {
                     mass [i] = e;
@@ -47,14 +54,35 @@ public class Main {
 
         @Override
         public int size() {
-            int i = 0;
-            for (E t : mass) {
-                if (t == null) {
-                    return i;
-                }
-                i++;
+//            int i = 0;
+//            for (E t : mass) {
+//                if (t == null) {
+//                    return i;
+//                }
+//                i++;
+//            }
+            return this.count;
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            if (o == null && icContainsNull == true) {
+                return true;
             }
-            return i;
+            if (o == null && icContainsNull == false) {
+                return false;
+            }
+            Iterator<E> it = iterator();
+            if (o==null) {
+                while (it.hasNext())
+                    if (it.next()==null)
+                        return true;
+            } else {
+                while (it.hasNext())
+                    if (o.equals(it.next()))
+                        return true;
+            }
+            return false;
         }
     }
 
